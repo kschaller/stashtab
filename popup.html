@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>Stashtab Popup</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
     <!--
@@ -12,6 +13,31 @@ Also list out currently stored tab sets. For a currently stored tab set, you can
 
 Delete can be a trash can icon. Restore can just be "Restore" text, for clarity. Use a "+" icon for creating a new set. Save and restore should be different sections. There should be a save button.
     -->
-    Test
+    <h3>New Stash</h3>
+    <form>
+      <input type="text" name="name">
+      <input type="submit" name="save" value="Save">
+    </form>
+
+    <h3>Saved Stashes</h3>
+    <table>
+      <tr>
+        <td>Example #1</td>
+        <td><a href="#">Restore</a></td>
+        <td><a href="#">Delete</a></td>
+      </tr>
+      <tr>
+        <td>Example #2</td>
+        <td><a href="#">Restore</a></td>
+        <td><a href="#">Delete</a></td>
+      </tr>
+      <tr>
+        <td>Example #3</td>
+        <td><a href="#">Restore</a></td>
+        <td><a href="#">Delete</a></td>
+      </tr>
+    </table>
+
+    <script src="stash.js"></script>
   </body>
 </html>
