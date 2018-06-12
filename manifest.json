@@ -3,6 +3,12 @@
   "version": "1.0",
   "description": "Save and restore the state of your browser tabs.",
   "manifest_version": 2,
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
   "permissions": ["tabs", "storage"],
   "browser_action": {
     "default_popup": "popup.html"
