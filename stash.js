@@ -1,13 +1,13 @@
 "use strict";
 
 function buildTable() {
-  var table = document.getElementById('stashTable');
+  var table = document.getElementById("stashTable");
   var fragment = document.createDocumentFragment();
 
   tabGroups.forEach(function(group, index) {
-    var tr = document.createElement('tr');
+    var tr = document.createElement("tr");
     tr.setAttribute("id", index);
-    var td = document.createElement('td');
+    var td = document.createElement("td");
     td.textContent = group.name;
     var restoreLink = buildRestore();
     var deleteLink = buildDelete();
@@ -21,8 +21,8 @@ function buildTable() {
 }
 
 function buildRestore() {
-  var td = document.createElement('td');
-  var a = document.createElement('a');
+  var td = document.createElement("td");
+  var a = document.createElement("a");
   a.setAttribute("href", "#");
   a.textContent = "Restore";
   td.appendChild(a)
@@ -30,17 +30,17 @@ function buildRestore() {
 }
 
 function buildDelete() {
-  var td = document.createElement('td');
-  var a = document.createElement('a');
+  var td = document.createElement("td");
+  var a = document.createElement("a");
   a.setAttribute("href", "#");
   a.textContent = "Delete";
   td.appendChild(a)
   return td;
 }
 
-// Delete the contents of the table so we can rebuild it based on what's currently stored.
+// Delete the contents of the table so we can rebuild it based on what"s currently stored.
 function resetTable() {
-  var table = document.getElementById('stashTable');
+  var table = document.getElementById("stashTable");
   table.innerHTML = "";
 }
 
@@ -78,11 +78,39 @@ var testGroup = {
 
 tabGroups = [testGroup];
 
-// chrome.storage.sync.get('tabGroups', function(data) {
+// chrome.storage.sync.get("tabGroups", function(data) {
 
 // });
 
-window.onload = function() {
+function getTabGroups() {
+  chrome.storage.sync.get("tabGroups", function(data) {
+    tabGroups = data;
+  });
+}
+
+function saveTabs() {
+  // Grab the name of the tab group, or set it to a default value if blank.
+  var name = document.getElementById("name").value;
+
+  if (name = "") {
+    name = "(no name)";
+  }
+
+  // Get all tabs in the current window and build an array of URLs from them.
+  var urls = [];
+  chrome.tabs.query({ currentWindow: true }, function(tabs) {
+    tabs.forEach(function(tab) {
+      urls.push(tab.url);
+    });
+  });
+}
+
+function setup() {
+  document.addEventListener("submit", saveTabs());
   resetTable();
   buildTable();
+}
+
+window.onload = function() {
+  setup();
 }
