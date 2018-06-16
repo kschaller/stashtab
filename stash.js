@@ -1,5 +1,7 @@
 "use strict";
 
+var tabGroups = [];
+
 function buildTable() {
   var table = document.getElementById("stashTable");
   var fragment = document.createDocumentFragment();
@@ -44,53 +46,17 @@ function resetTable() {
   table.innerHTML = "";
 }
 
-/*
-[
-  {
-    name: "Group 1",
-    urls: [
-      "http://google.com",
-      "http://www.nytimes.com"
-    ]
-  },
-]
-*/
-
-/*
-
-1. Retrieve a list of stored objects
-
-2. Create HTML list elements with a loop. Assign index as a value for later use.
-
-3. Save a new one? Just reload the whole table for simplicity.
-
-*/
-
-var tabGroups = [];
-
-var testGroup = {
-  name: "Test Group",
-  urls: [
-    "http://google.com",
-    "http://www.nytimes.com"
-  ]
-}
-
-tabGroups = [testGroup];
-
-// chrome.storage.sync.get("tabGroups", function(data) {
-
-// });
-
 function getTabGroups() {
   chrome.storage.sync.get("tabGroups", function(data) {
-    tabGroups = data;
+    tabGroups = data.tabGroups;
+    resetTable();
+    buildTable();
   });
 }
 
 function saveTabs() {
   // Grab the name of the tab group, or set it to a default value if blank.
-  var name = document.getElementById("name").value;
+  var name = document.getElementById("tabGroupName").value;
 
   if (name = "") {
     name = "(no name)";
@@ -103,14 +69,30 @@ function saveTabs() {
       urls.push(tab.url);
     });
   });
+
+  // Construct the tab group.
+  var tabGroup = {
+    name: name,
+    urls: urls
+  };
+
+  // Append the new tab group to the existing groups.
+  tabGroups.push(tabGroup);
+
+  // Save the tab group to storage.
+  chrome.storage.sync.set({ "tabGroups": tabGroups }, function() {
+    resetTable();
+    buildTable();
+  });
 }
 
 function setup() {
-  document.addEventListener("submit", saveTabs());
-  resetTable();
-  buildTable();
+  console.log("setup");
+  getTabGroups();
+  document.getElementById("save").addEventListener("click", saveTabs);
 }
 
-window.onload = function() {
-  setup();
-}
+document.addEventListener("DOMContentLoaded", setup);
+// window.onload = function() {
+//   setup();
+// }
