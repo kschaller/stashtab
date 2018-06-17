@@ -40,7 +40,7 @@ function buildDelete() {
   return td;
 }
 
-// Delete the contents of the table so we can rebuild it based on what"s currently stored.
+// Delete the contents of the table so we can rebuild it based on what's currently stored.
 function resetTable() {
   var table = document.getElementById("stashTable");
   table.innerHTML = "";
